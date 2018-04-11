@@ -12,7 +12,13 @@ class Game():
 
         self.queue=[]
         self.deathbed_queue=[]
-        self.nonce=1 #for card generation ids
+
+    def run(self):
+
+        self.player1.load_deck('deck1.txt')
+        self.player2.load_deck('deck2.txt')
+
+    
 
     def queue_up(self, effect):
 
@@ -77,7 +83,4 @@ class Game():
 
 if __name__=="__main__":
     g=Game()
-    p1=g.player1
-    p2=g.player2
-    g.player1.load_deck('deck1.txt')
-    g.player2.load_deck('deck1.txt')
+    g.run()
