@@ -22,6 +22,7 @@ class Dizi_Rat(Minion):
     def reset_stats(self):
 
         self.name="Dizi Rat"
+        self.text="Deathbed: Deal 1 damage to all minions"
 
         self.rarity=1
 
