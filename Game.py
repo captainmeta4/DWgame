@@ -10,6 +10,34 @@ class Game():
 
         self.turn=self.player2
 
+        self.queue=[]
+        self.deathbed_queue=[]
+        self.nonce=1 #for card generation ids
+
+    def queue_up(self, effect):
+
+        #Deathbed effects come after all other effects
+
+        if effect.__name__ is "deathbed":        
+            self.deathbed_queue.append(effect)
+        else:
+            self.queue.append(effect)
+
+    def execute_queue(self):
+
+        queue=self.queue+self.deathbed_queue
+        self.queue=[]
+        self.deathbed_queue=[]
+
+        while len(queue)>0:
+            queue.pop(0)()
+
+
+        #it's possible that effects in the queue
+        #may have caused new effects to be queued up
+        #so this method then calls itself
+        if len(self.queue+self.deathbed_queue)>0:
+            self.execute_queue()
         
 
     def print(self):
@@ -23,22 +51,17 @@ class Game():
             print(card)
 
     def end_turn(self):
-        queued=[]
-        
         for card in self.turn.board.cards:
-            queued.append(card.on_end_of_turn)
+            self.queue_up(card.on_end_of_turn)
 
-        for effect in queued:
-            effect()
+        self.execute_queue()
 
         self.turn=self.turn.opponent()
 
-        queued=[]
         for card in self.turn.board.cards:
-            queued.append(card.on_end_of_turn)
+            self.queue_up(card.on_end_of_turn)
 
-        for effect in queued:
-            effect()
+        self.execute_queue()
 
         self.turn.draw()
 
@@ -48,7 +71,6 @@ class Game():
         m2=self.player2.board.cards[y]
 
         m1.fight(m2)
-            
             
               
 

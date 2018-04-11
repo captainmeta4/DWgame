@@ -22,7 +22,6 @@ class Dizi_Rat(Minion):
     def reset_stats(self):
 
         self.name="Dizi Rat"
-        self.text="Deathcry: Deal 1 damage to all minions"
 
         self.rarity=1
 
@@ -31,7 +30,7 @@ class Dizi_Rat(Minion):
         self.health=1
         self.base_health=1
 
-    def deathcry(self):
+    def deathbed(self):
         for minion in self.owner.board.cards+self.owner.opponent().board.cards:
             minion.take_damage(1)
 
@@ -50,6 +49,22 @@ class Dominion_Guard(Minion):
 
     def set_traits(self):
         self.taunt=True
+
+class Raging_Raider(Minion):
+    def reset_stats(self):
+
+        self.name="Raging Raider"
+        self.text="Whenever this takes damage, gain +2 Attack."
+
+        self.rarity=2
+
+        self.cost=4
+        self.attack=1
+        self.health=5
+        self.base_health=5
+
+    def on_take_damage(self):
+        self.attack+=2
 
 
 class Vicious_Broodling(Minion):
